@@ -18,5 +18,5 @@
 	
 	This project was build using Indiana university's enterprise account github.iu.edu.
     This repository has been made to make the work public.
-    https://cloud.githubusercontent.com/assets/10701458/12539071/4e3d87f8-c2b8-11e5-90e7-de8578bdf5c9.PNG
+    ![IU Git Screenshot] (https://cloud.githubusercontent.com/assets/10701458/12539071/4e3d87f8-c2b8-11e5-90e7-de8578bdf5c9.PNG)
 
