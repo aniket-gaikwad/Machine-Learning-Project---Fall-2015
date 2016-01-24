@@ -19,19 +19,34 @@ import algorithms as algs
 import utilities as util
 from scipy.stats import ttest_ind
 from sklearn import metrics
-
+"""
+Name : Aniket Gaikwad
+Desc : This file contains the class for K-fold cross validation. This class will initialize the
+       number of folds to use and run the validation by calculcating required statistics.
+	   
+"""
 
 class Kfold:
     def __init__(self,No_of_Folds=None):
+		"""
+		Initialize the number of folds.
+		"""
         self.No_of_Folds=No_of_Folds
         self.kf=None
 
     def getFoldIndices(self,dataset):
+		'''
+		Get the indices for tuple entries in each fold.
+		'''
         kf = KFold(dataset.shape[0],n_folds=self.No_of_Folds)
         self.kf=kf
         return kf
 
     def runFolds(self,dataset):
+		'''
+		for each fold run the required classifiers. For each result calculate
+		required evaluation parameters.
+		'''
         i=1
         FoldAccuracy={}
         for train_index, test_index in self.kf:
@@ -89,6 +104,9 @@ class Kfold:
         self.StatisticalSignificance(FoldAccuracy)
 
     def plotGraph(self,AUCROCPlotPoints,learnerName):
+		'''
+		Plot the AUC-ROC plot for each classifier.
+		'''
         fpr=AUCROCPlotPoints[0]
         tpr=AUCROCPlotPoints[1]
         roc_auc= metrics.auc(fpr, tpr)
@@ -105,6 +123,10 @@ class Kfold:
         plt.show()
 
     def StatisticalSignificance(self,FoldAccuracy):
+		'''
+		For each classifier average the results & calculate the T-value and P-value 
+		statistics for statistical significance test.
+		'''
         print('\n ***************** Final Result *************\n {0}').format(FoldAccuracy)
         MasterL2=[]
         #['L2_1','L2_2','L2_3','L2_4','L2_5']

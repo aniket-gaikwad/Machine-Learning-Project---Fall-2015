@@ -4,7 +4,11 @@ import itertools
 import sys
 
 csv.field_size_limit(sys.maxsize)
-
+"""
+Name : Aniket Gaikwad
+desc : This file contains class that will hadle the CSV file operations.
+       This will be used in pre-processing steps.
+"""
 class csvHandler:
     """
     This class has methods that handles the CSV file operations

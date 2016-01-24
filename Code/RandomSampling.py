@@ -18,7 +18,12 @@ from sklearn.metrics import r2_score
 import algorithms as algs
 import utilities as util
 import KfoldCrossValidation as Kfold
-
+"""
+Name : Aniket Gaikwad
+Desc : This file contains the class for random sampling of dataset.
+       This class helps in sampling dataset with classlabel {0,1} to be sampled in 
+	   1:2 ratio. This class was divised to handle class imbalance in dataset.
+"""
 
 class randomSampling:
     def __init__(self):

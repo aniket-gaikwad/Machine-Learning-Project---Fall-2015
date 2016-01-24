@@ -2,6 +2,11 @@ import numpy as np
 from sklearn.metrics import recall_score
 from sklearn.metrics import roc_auc_score
 from sklearn import metrics
+"""
+Name : Aniket Gaikwad
+Desc : This is uitility class with all utility functions.
+	   This includes the functions for parameter evalution, score calculation etc.
+"""
 
 def loadcsv(filename):
     dataset = np.genfromtxt(filename, delimiter=',')

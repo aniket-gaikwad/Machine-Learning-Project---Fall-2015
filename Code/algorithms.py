@@ -8,8 +8,14 @@ from sklearn.neural_network import BernoulliRBM
 import numpy as np
 import utilities as utils
 import itertools
-
-
+"""
+Name : Aniket Gaikwad
+Desc : This is the class file for different classifier used. Each classifier class
+       has three definitions viz. Initialization, Learning and Testing.
+	   Initialization will initialize the hyperparameters.
+	   Learning will build a model.
+	   Testing will run the test data on model.
+"""
 class NaiveBayes:
     def __init__(self):
         self.model=None

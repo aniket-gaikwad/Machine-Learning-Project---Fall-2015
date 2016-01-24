@@ -19,6 +19,11 @@ import algorithms as algs
 import utilities as util
 import KfoldCrossValidation as Kfold
 import RandomSampling as RS
+"""
+Name : Aniket Gaikwad
+desc : Main method to run the project. This file contains class that proform data loading,
+       data splitting, Feature selection,running classifier and writting results to file.
+"""
 
 class dataLoad:
     def __init__(self):
@@ -29,6 +34,10 @@ class dataLoad:
 
 
     def splitdataset(self,dataset, trainsize=6600, testsize=3300, testfile=None):
+		'''
+			Split dataset into size as per trainsize and testsize.
+			Return Train and Test dataset.
+		'''
         randindices = np.random.randint(0,dataset.shape[0],trainsize+testsize)
         ## Generate the random indices bewteen 0-number of rows with size of random array as 800
         numinputs = dataset.shape[1]-1
@@ -50,6 +59,10 @@ class dataLoad:
         return ((Xtrain,ytrain), (Xtest,ytest))
 
     def featureSel(self,dataset,fileType=None):
+		'''
+			Based on analysis perfomed offline on dataset perform feature selection.
+		'''
+		
         header=self.header
         featureRemove=['PurchMonth','PurchDay','PurchYear','PRIMEUNIT','AUCGUART','VNZIP1','SubModel','Model','BYRNO']
         indexRemove=[header.index(x) for x in featureRemove]
@@ -96,6 +109,12 @@ class dataLoad:
 
 
     def loadData(self,fileName,fileType=None):
+		'''
+			Load data into memory & perform train, test splitting.
+			For discrete feature peform the discritization (i.e. if feature has 3 possible
+			value {3,4,5} , then split the feature into 3 parts feature_3, feature_4, feature_5.
+			This step is essential as we assuming distance in euclidian space.)
+		'''
         dataset=None
         print('\n Loading data .....')
         dataset=self.loadcsv(fileName,fileType)
