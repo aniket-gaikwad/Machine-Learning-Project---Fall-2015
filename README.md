@@ -5,7 +5,7 @@
 
 
 ###### Problem Statement : dataset contains information about used vehicles sold at auctions. The task is to predict if the vehicle to be sold at an auction will be a good buy or not. A vehicle that is not in the best of conditions is considered a kick.
-                This is a Kaggle compition. So like any of the kaggle competition, this competition has its own train dataset and sample test dataset.	   
+        This is a Kaggle competition. So like any of the kaggle competition, this competition has its own train dataset and sample test dataset.	   
 
 *>Dataset Description:*
 
