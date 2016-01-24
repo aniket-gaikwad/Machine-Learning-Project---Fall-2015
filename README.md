@@ -17,6 +17,6 @@
 ###### disclaimer
 	
 	This project was build using Indiana university's enterprise account github.iu.edu.
-    This repository has been made to make the work public.
+    Please find screenshot.
 ![IU Github Screensgot](IU_Git_Screenshot.PNG)
 
