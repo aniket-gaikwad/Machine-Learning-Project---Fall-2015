@@ -18,5 +18,5 @@
 	
 	This project was build using Indiana university's enterprise account github.iu.edu.
     This repository has been made to make the work public.
-    ![alt tag](https://raw.github.com/aniket-gaikwad/Machine-Learning-Project---Fall-2016/blob/master/IU_Git_Screenshot.PNG)
+    ![[solarized dualmode] (https://raw.github.com/aniket-gaikwad/Machine-Learning-Project---Fall-2016/blob/master/IU_Git_Screenshot.PNG)]
 
