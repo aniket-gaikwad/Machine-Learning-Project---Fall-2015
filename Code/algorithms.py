@@ -8,14 +8,21 @@ from sklearn.neural_network import BernoulliRBM
 import numpy as np
 import utilities as utils
 import itertools
+from sklearn.grid_search import GridSearchCV
+import pickle
+import pandas as pd
+
 """
-Name : Aniket Gaikwad
-Desc : This is the class file for different classifier used. Each classifier class
-       has three definitions viz. Initialization, Learning and Testing.
-	   Initialization will initialize the hyperparameters.
-	   Learning will build a model.
-	   Testing will run the test data on model.
+
+    Name : Aniket Gaikwad
+    Desc : This is the class file for different classifier used. Each classifier class
+           has three definitions viz. Initialization, Learning and Testing.
+    	   Initialization will initialize the hyperparameters.
+    	   Learning will build a model.
+    	   Testing will run the test data on model.
+
 """
+
 class NaiveBayes:
     def __init__(self):
         self.model=None
@@ -49,22 +56,148 @@ class LogisticRegression:
         return self.prediction
 
 
-class GradientBoost:
-    def __init__(self,n_estimators=None):
+
+class LogisticRegression1wt:
+    def __init__(self):
         self.model=None
         self.prediction=None
-        self.n_estimators=n_estimators
 
     def learn(self,Xtrain,Ytrain):
-        print('\n Number of estimators : {0}').format(self.n_estimators)
-        model=GradientBoostingClassifier(learning_rate =0.1,n_estimators=self.n_estimators)
-        model.fit(Xtrain,Ytrain)
-        self.model=model
+        param_grid  = {'penalty' : ['l2','l1'],
+                        'C' : [0.001, 0.01, 0.1, 10, 20],
+                        'tol' : [0.001, 0.01, 0.1],
+                        'class_weight' : [{1.0:3.0,0.0:1.0},{1.0:10.0,0.0:1.0}]
+                        }
+        est = linear_model.LogisticRegression()
+        gs_cv = GridSearchCV(est,param_grid).fit(Xtrain,Ytrain)
+        print("\n Best Para : ")
+        best_params=gs_cv.best_params_
+        print(best_params)
+        best_estimator=gs_cv.best_estimator_
+        print(best_estimator)
+        with open("best_estimator_Wt_logistic","wb") as f:
+            pickle.dump(best_estimator,f)
+        self.model=best_estimator
 
     def predict(self,Xtest):
         model=self.model
         self.prediction=model.predict(Xtest)
         return self.prediction
+
+
+
+class LogisticRegression1:
+    def __init__(self):
+        self.model=None
+        self.prediction=None
+
+    def learn(self,Xtrain,Ytrain):
+        param_grid  = {'penalty' : ['l2','l1'],
+                        'C' : [0.001, 0.01, 0.1, 10, 20],
+                        'tol' : [0.001, 0.01, 0.1]
+                        #,'class_weight' : None
+                        }
+        est = linear_model.LogisticRegression()
+        gs_cv = GridSearchCV(est,param_grid).fit(Xtrain,Ytrain)
+        print("\n Best Para : ")
+        best_params=gs_cv.best_params_
+        print(best_params)
+        best_estimator=gs_cv.best_estimator_
+        print(best_estimator)
+        with open("best_estimator_logistic","wb") as f:
+            pickle.dump(best_estimator,f)
+        self.model=best_estimator
+
+    def predict(self,Xtest):
+        model=self.model
+        self.prediction=model.predict(Xtest)
+        return self.prediction
+
+
+
+class GradientBoost:
+    def __init__(self,train_column_headers,n_estimators=None,fold_index=-1):
+        self.model=None
+        self.prediction=None
+        self.n_estimators=n_estimators
+        self.train_column_headers=train_column_headers
+        self.fold_index=fold_index
+
+    def learn(self,Xtrain,Ytrain):
+        param_grid  = {'learning_rate' : [0.01],
+                        'max_depth' : [4],
+                        'min_samples_leaf' : [3, 5],
+                        'max_features' : [1.0],
+                        'subsample' : [0.5]}
+        est = GradientBoostingClassifier(n_estimators=self.n_estimators)
+        print('\n Number of estimators : {0}').format(self.n_estimators)
+        gs_cv = GridSearchCV(est,param_grid).fit(Xtrain,Ytrain)
+        print("\n Best Para : ")
+        best_params=gs_cv.best_params_
+        print(best_params)
+        with open("best_param.pkl","wb") as f:
+            pickle.dump(best_params,f)
+        print("\n best_estimator_ : ")
+        best_estimator=gs_cv.best_estimator_
+        print(best_estimator)
+        with open("best_estimator.pkl","wb") as f:
+            pickle.dump(best_estimator,f) 
+        
+        feature_importances=best_estimator.feature_importances_
+        feat_imp = pd.Series(feature_importances, self.train_column_headers).sort_values(ascending=False)
+        print("\n Important Features : ")
+        print(feat_imp)
+        with open("feature_importances.pkl","wb") as f:
+            pickle.dump(feat_imp,f)
+        self.model=best_estimator
+
+
+
+class GradientBoost1:
+    def __init__(self,train_column_headers,n_estimators=None,fold_index=-1):
+        self.model=None
+        self.prediction=None
+        self.n_estimators=n_estimators
+        self.train_column_headers=train_column_headers
+        self.fold_index=fold_index
+
+    def learn(self,Xtrain,Ytrain):
+        param_grid  = {'learning_rate' : [0.01],
+                        'max_depth' : [4],
+                        'min_samples_leaf' : [9],
+                        'max_features' : [0.3],
+                        'subsample' : [0.5]}
+        est = GradientBoostingClassifier(n_estimators=self.n_estimators)
+        print('\n Number of estimators : {0}').format(self.n_estimators)
+        gs_cv = GridSearchCV(est,param_grid).fit(Xtrain,Ytrain)
+        print("\n Best Para : ")
+        best_params=gs_cv.best_params_
+        print(best_params)
+        with open("best_param_"+str(self.fold_index),"wb") as f:
+            pickle.dump(best_params,f)
+        print("\n best_estimator_ : ")
+        best_estimator=gs_cv.best_estimator_
+        print(best_estimator)
+        with open("best_estimator_"+str(self.fold_index),"wb") as f:
+            pickle.dump(best_estimator,f) 
+        
+        #model=GradientBoostingClassifier(learning_rate =0.1,n_estimators=self.n_estimators)
+        #best_estimator.fit(Xtrain,Ytrain)
+        feature_importances=best_estimator.feature_importances_
+        feat_imp = pd.Series(feature_importances, self.train_column_headers).sort_values(ascending=False)
+        print("\n Important Features : ")
+        print(feat_imp)
+        with open("feature_importances_"+str(self.fold_index),"wb") as f:
+            pickle.dump(feature_importances,f)
+        self.model=best_estimator
+
+
+    def predict(self,Xtest):
+        model=self.model
+        self.prediction=model.predict(Xtest)
+        return self.prediction
+
+
 
 class DeepBeliefNetwork:
     def __init__(self,hiddenLayers,learning_rate):
@@ -82,6 +215,64 @@ class DeepBeliefNetwork:
         model=self.model
         self.data=model.transform(data)
         return self.data
+
+
+
+class SVM1:
+    def __init__(self):
+        self.model=None
+        self.prediction=None
+
+    def learn(self,Xtrain,Ytrain):
+        param_grid  = {'kernel' : ['rbf'],
+                        'C' : [0.001, 0.1]
+                        #,'class_weight' : None
+                        }
+        est = svm.SVC()
+        gs_cv = GridSearchCV(est,param_grid).fit(Xtrain,Ytrain)
+        print("\n Best Para : ")
+        best_params=gs_cv.best_params_
+        print(best_params)
+        best_estimator=gs_cv.best_estimator_
+        print(best_estimator)
+        with open("best_estimator_SVM","wb") as f:
+            pickle.dump(best_estimator,f)
+        self.model=best_estimator
+        
+    def predict(self,Xtest):
+        model=self.model
+        self.prediction=model.predict(Xtest)
+        return self.prediction
+
+
+
+class SVM1wt:
+    def __init__(self):
+        self.model=None
+        self.prediction=None
+
+    def learn(self,Xtrain,Ytrain):
+        param_grid  = {'kernel' : ['rbf'],
+                        'C' : [0.001, 0.1]
+                        ,'class_weight' : [{1.0:10.0, 0.0:1.0}]
+                        }
+        est = svm.SVC()
+        gs_cv = GridSearchCV(est,param_grid).fit(Xtrain,Ytrain)
+        print("\n Best Para : ")
+        best_params=gs_cv.best_params_
+        print(best_params)
+        best_estimator=gs_cv.best_estimator_
+        print(best_estimator)
+        with open("best_estimator_Wt_SVM","wb") as f:
+            pickle.dump(best_estimator,f)
+        self.model=best_estimator
+        
+    def predict(self,Xtest):
+        model=self.model
+        self.prediction=model.predict(Xtest)
+        return self.prediction
+
+
 
 class SVM:
     def __init__(self,C):
@@ -105,6 +296,7 @@ class SVM:
         return self.prediction
 
 
+
 class DecisionTreeReg:
     def __init__(self):
         self.model=None
@@ -120,6 +312,8 @@ class DecisionTreeReg:
         self.prediction=model.predict(Xtest)
         return self.prediction
 
+
+
 class RandForest:
     def __init__(self):
         self.model=None
@@ -134,6 +328,8 @@ class RandForest:
         model=self.model
         self.prediction=model.predict(Xtest)
         return self.prediction
+
+
 
 class backPropogation:
     """Back propogation"""

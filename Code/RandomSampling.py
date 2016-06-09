@@ -1,49 +1,24 @@
-import  numpy as np
-import csv
-#import DataVisualization as DV
-import  pandas as pd
-from sklearn.preprocessing import OneHotEncoder
-from sklearn.metrics import mean_squared_error
-from math import sqrt
-import matplotlib.pyplot as plt
-from operator import itemgetter
-from sklearn.metrics import mean_squared_error
-from math import sqrt
-from sklearn.feature_selection import SelectKBest
-from sklearn.feature_selection import chi2
-from sklearn.feature_selection import VarianceThreshold
-from sklearn.decomposition import PCA
-from sklearn.cross_validation import KFold
-from sklearn.metrics import r2_score
-import algorithms as algs
-import utilities as util
-import KfoldCrossValidation as Kfold
-"""
-Name : Aniket Gaikwad
-Desc : This file contains the class for random sampling of dataset.
-       This class helps in sampling dataset with classlabel {0,1} to be sampled in 
-	   1:2 ratio. This class was divised to handle class imbalance in dataset.
-"""
+import numpy as np
 
 class randomSampling:
+    """
+        Name : Aniket Gaikwad
+        Desc : Ramdom sampling of data. Set zeroCount and oneCount for proportion of sampling.
+    """
     def __init__(self):
         self.model=None
         self.dataset=None
 
-    def getRandomSample(self,dataset):
-        zeroCount=18000
+    def getRandomSample(self,X,Y):
+        zeroCount=9000
         oneCount=9000
         indexList=[]
-        for i in range(dataset.shape[0]):
-            if zeroCount<=0 and oneCount<=0:
-                break
-            if dataset[i][dataset.shape[1]-1]==0 and zeroCount>0:
-                zeroCount-=1
-                indexList.append(i)
-            if dataset[i][dataset.shape[1]-1]==1 and oneCount >0:
-                oneCount-=1
-                indexList.append(i)
-        dataset=dataset[indexList,:]
-        print('\n dataset : {0}').format(dataset.shape)
-        return dataset
+        zero_rows = np.random.choice(X.loc[Y==0].index.values, zeroCount)
+        one_rows = np.random.choice(X.loc[Y==1].index.values, oneCount)
+        sampled_X_0 = X.ix[zero_rows]
+        sampled_Y_0 = Y.ix[zero_rows]
+        sampled_X_1 = X.ix[one_rows]
+        sampled_Y_1 = Y.ix[one_rows]
 
+        return (sampled_X_0.append(sampled_X_1),sampled_Y_0.append(sampled_Y_1))
+        

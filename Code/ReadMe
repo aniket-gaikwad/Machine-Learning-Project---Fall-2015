@@ -1,0 +1,17 @@
+File details :
+-----------------------------------
+1. create_dataset.py
+ 	- This if the first piece of code in pipeline. It will generate new file from existing training & test file.
+ 	- I have done some feature engineering in this code like handling categorical values, continous values and missing values.
+
+ 	execution : python create_dataset.py h -trainFileName -testFileName
+
+ 2. Statistics.py
+ 	- This file will give some basic statistics about data.
+
+ 3. Visualization.py
+ 	- This file contains visualizations of data.
+
+ 4. run.py
+ 	- Contains different experiments.
+ 	- Comment or uncomment different experiments to see results.

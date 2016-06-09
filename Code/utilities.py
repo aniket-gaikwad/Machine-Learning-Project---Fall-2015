@@ -1,11 +1,14 @@
 import numpy as np
 from sklearn.metrics import recall_score
+from sklearn.metrics import precision_score
 from sklearn.metrics import roc_auc_score
 from sklearn import metrics
+from sklearn.metrics import accuracy_score
+
 """
-Name : Aniket Gaikwad
-Desc : This is uitility class with all utility functions.
-	   This includes the functions for parameter evalution, score calculation etc.
+    Name : Aniket Gaikwad
+    Desc : This is uitility class with all utility functions.
+           This includes the functions for parameter evalution, score calculation etc.
 """
 
 def loadcsv(filename):
@@ -26,16 +29,17 @@ def l2err_squared(prediction,ytest):
 
 
 def getaccuracy(ytest, predictions):
-    correct = 0
-    #print('\nYtest : {0}').format(ytest)
-    #print('\n Pred : {0}').format(predictions)
-    for i in range(len(ytest)):
-        if ytest[i] == predictions[i]:
-            correct += 1
-    return (correct/float(len(ytest))) * 100.0
+    return accuracy_score(ytest, predictions)
+
 
 def getRecall(ytest,predictions):
     return recall_score(ytest,predictions)
+
+def getPrecision(ytest,predictions):
+    return precision_score(ytest,predictions)
+
+def getF5(precision,recall):
+    return (26)*precision*recall / ((25*precision) + recall)
 
 def getAUCROCPlotPoints(ytest,predictions):
     fpr, tpr,thresh= metrics.roc_curve(ytest, predictions, pos_label=1)
